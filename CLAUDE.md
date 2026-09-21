@@ -6,7 +6,7 @@ Reglas que cualquiera (persona o IA) debe respetar al tocar este repo.
 
 - El servidor no confía en lo que llega. Todo `POST` y todo `:id` pasa por `safeParse`
   antes de tocar Prisma.
-- Si no valida: `400` con `{ error, detalles }`. Nunca se llama a la base con datos sin validar.
+- Si no valida: `400` con `{ error, detalles, generales }`. Nunca se llama a la base con datos sin validar.
 - La validación del cliente es para la experiencia de usuario, no es una barrera. No sustituye a la del servidor.
 - Los schemas viven en `src/validation.ts`. Si una regla cambia, cambia ahí y también en el schema del frontend.
 

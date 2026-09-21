@@ -28,11 +28,11 @@ export const crearReservaSchema = z
     cuerpoInvalido,
   )
   .refine((r) => r.fin > r.inicio, {
-    message: "el fin debe ser después del inicio",
+    error: "el fin debe ser después del inicio",
     path: ["fin"],
   })
   .refine((r) => r.inicio > new Date(), {
-    message: "no podés reservar en el pasado",
+    error: "no podés reservar en el pasado",
     path: ["inicio"],
   });
 

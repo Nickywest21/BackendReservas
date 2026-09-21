@@ -35,7 +35,7 @@ export async function crearSala(req: Request, res: Response) {
 // POST /api/salas/:id/reservas
 export async function crearReserva(req: Request, res: Response) {
   const id = idSchema.safeParse(req.params.id);
-  if (!id.success) return res.status(400).json({ error: "id de sala inválido" });
+  if (!id.success) return invalido(res, id.error, "id de sala inválido");
 
   const parsed = crearReservaSchema.safeParse(req.body);
   if (!parsed.success) return invalido(res, parsed.error);
@@ -52,7 +52,7 @@ export async function crearReserva(req: Request, res: Response) {
 // DELETE /api/salas/:id
 export async function borrarSala(req: Request, res: Response) {
   const id = idSchema.safeParse(req.params.id);
-  if (!id.success) return res.status(400).json({ error: "id de sala inválido" });
+  if (!id.success) return invalido(res, id.error, "id de sala inválido");
 
   try {
     await prisma.sala.delete({ where: { id: id.data } });
