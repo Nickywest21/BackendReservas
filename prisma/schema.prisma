@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Sala {
+  id        Int       @id @default(autoincrement())
+  nombre    String
+  edificio  String
+  capacidad Int
+  reservas  Reserva[]
+
+  @@map("salas")
+}
+
+model Reserva {
+  id          Int      @id @default(autoincrement())
+  salaId      Int
+  responsable String
+  motivo      String
+  people      Int
+  email       String
+  phone       String
+  fecha       String
+  horario     String
+  sala        Sala     @relation(fields: [salaId], references: [id], onDelete: Cascade)
+
+  @@unique([salaId, fecha, horario])
+  @@index([salaId])
+  @@map("reservas")
+}
