@@ -22,8 +22,11 @@ model Reserva {
   salaId      Int
   responsable String
   motivo      String
-  inicio      DateTime
-  fin         DateTime
+  people      Int
+  email       String
+  phone       String
+  fecha       String
+  horario     String
   sala        Sala     @relation(fields: [salaId], references: [id], onDelete: Cascade)
 
   @@index([salaId])

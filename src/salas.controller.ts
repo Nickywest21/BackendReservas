@@ -43,6 +43,13 @@ export async function crearReserva(req: Request, res: Response) {
   const sala = await prisma.sala.findUnique({ where: { id: id.data } });
   if (!sala) return res.status(404).json({ error: "sala no encontrada" });
 
+  if (parsed.data.people > sala.capacidad) {
+    return res.status(400).json({
+      error: "datos inválidos",
+      detalles: { people: [`la capacidad máxima es de ${sala.capacidad} personas`] },
+    });
+  }
+
   const reserva = await prisma.reserva.create({
     data: { ...parsed.data, salaId: id.data },
   });
