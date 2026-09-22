@@ -21,8 +21,25 @@ export const crearReservaSchema = z
   .object(
     {
       responsable: z.string().trim().min(3, "¿quién reserva?").max(80),
+
+      email: z.email("el correo no es válido"),
+
+      phone: z
+        .string()
+        .trim()
+        .min(8, "el teléfono es muy corto")
+        .max(20, "el teléfono es muy largo"),
+
+      people: z
+        .number()
+        .int("la cantidad de personas debe ser un número entero")
+        .positive("debe haber al menos una persona")
+        .max(500, "cantidad de personas no válida"),
+
       motivo: z.string().trim().min(3, "contá para qué").max(200),
-      inicio: z.coerce.date(), // acepta texto ISO y lo pasa a fecha
+
+      inicio: z.coerce.date(),
+
       fin: z.coerce.date(),
     },
     cuerpoInvalido,

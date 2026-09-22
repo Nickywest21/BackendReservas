@@ -34,18 +34,41 @@ export async function crearSala(req: Request, res: Response) {
 
 // POST /api/salas/:id/reservas
 export async function crearReserva(req: Request, res: Response) {
+
+  // 1. Validar ID de la sala
   const id = idSchema.safeParse(req.params.id);
-  if (!id.success) return invalido(res, id.error, "id de sala inválido");
 
+  if (!id.success) {
+    return invalido(res, id.error, "id de sala inválido");
+  }
+
+  // 2. Validar datos enviados por el frontend
   const parsed = crearReservaSchema.safeParse(req.body);
-  if (!parsed.success) return invalido(res, parsed.error);
 
-  const sala = await prisma.sala.findUnique({ where: { id: id.data } });
-  if (!sala) return res.status(404).json({ error: "sala no encontrada" });
+  if (!parsed.success) {
+    return invalido(res, parsed.error);
+  }
 
-  const reserva = await prisma.reserva.create({
-    data: { ...parsed.data, salaId: id.data },
+  // 3. Comprobar que la sala existe
+  const sala = await prisma.sala.findUnique({
+    where: { id: id.data }
   });
+
+  if (!sala) {
+    return res.status(404).json({
+      error: "sala no encontrada"
+    });
+  }
+
+  // 4. Crear la reserva en PostgreSQL
+  const reserva = await prisma.reserva.create({
+    data: {
+      ...parsed.data,
+      salaId: id.data,
+    },
+  });
+
+  // 5. Devolver la reserva creada
   res.status(201).json(reserva);
 }
 

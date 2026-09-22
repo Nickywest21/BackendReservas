@@ -20,10 +20,16 @@ model Sala {
 model Reserva {
   id          Int      @id @default(autoincrement())
   salaId      Int
+
   responsable String
+  email       String
+  phone       String
+  people      Int
+
   motivo      String
   inicio      DateTime
   fin         DateTime
+
   sala        Sala     @relation(fields: [salaId], references: [id], onDelete: Cascade)
 
   @@index([salaId])
