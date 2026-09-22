@@ -29,6 +29,7 @@ model Reserva {
   horario     String
   sala        Sala     @relation(fields: [salaId], references: [id], onDelete: Cascade)
 
+  @@unique([salaId, fecha, horario])
   @@index([salaId])
   @@map("reservas")
 }

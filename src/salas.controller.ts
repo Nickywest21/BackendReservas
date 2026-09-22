@@ -50,6 +50,23 @@ export async function crearReserva(req: Request, res: Response) {
     });
   }
 
+  // Misma sala, misma fecha, mismo bloque: ya está tomado.
+  const ocupado = await prisma.reserva.findFirst({
+    where: {
+      salaId: id.data,
+      fecha: parsed.data.fecha,
+      horario: parsed.data.horario,
+    },
+  });
+
+  if (ocupado) {
+    return res.status(409).json({
+      error: "ese horario ya está reservado",
+      detalles: { horario: ["elegí otro horario o cambiá la fecha"] },
+      generales: [],
+    });
+  }
+
   const reserva = await prisma.reserva.create({
     data: { ...parsed.data, salaId: id.data },
   });
