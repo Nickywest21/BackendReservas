@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "reservas" ADD COLUMN "people" INTEGER NOT NULL;
+ALTER TABLE "reservas" ADD COLUMN "email" TEXT NOT NULL;
+ALTER TABLE "reservas" ADD COLUMN "phone" TEXT NOT NULL;
